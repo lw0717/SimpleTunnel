@@ -10,7 +10,7 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.example.partyspy.SimpleTunnel</string>
+		<string>group.com.lw.TestNetworkExtension</string>
 	</array>
 </dict>
 </plist>

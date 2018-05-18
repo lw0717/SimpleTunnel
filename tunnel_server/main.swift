@@ -17,10 +17,10 @@ let interruptSignalSource = DispatchSource.makeSignalSource(signal: SIGINT, queu
 let termSignalSource = DispatchSource.makeSignalSource(signal: SIGTERM, queue: .main)
 
 /// Basic sanity check of the parameters.
-guard CommandLine.argc == 3 else {
-	print("Usage: \(CommandLine.arguments[0]) <port> <config-file>")
-	exit(1)
-}
+//if CommandLine.arguments.count < 3 {
+//    print("Usage: \(CommandLine.arguments[0]) <port> <config-file>")
+//    exit(1)
+//}
 
 func ignore(_: Int32)  {
 }
@@ -29,8 +29,8 @@ signal(SIGINT, ignore)
 
 //let portString = Process().arguments![1]
 //let configurationPath = Process().arguments![2]
-let portString = CommandLine.arguments[1]
-let configurationPath = CommandLine.arguments[2]
+let portString = "10086"//CommandLine.arguments[1]
+let configurationPath = "/Users/lw0717/Desktop/SimpleTunnel-master/tunnel_server/config.plist"//CommandLine.arguments[2]
 let networkService: NetService
 
 // Initialize the server.
