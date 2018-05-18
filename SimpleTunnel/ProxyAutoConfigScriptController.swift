@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the ProxyAutoConfigScriptController class, which controls a view used to input the text of a Proxy Auto-Configuration Script.
+    该文件包含ProxyAutoConfigScriptController类，该类控制用于输入代理自动配置脚本文本的视图。
 */
 
 import UIKit

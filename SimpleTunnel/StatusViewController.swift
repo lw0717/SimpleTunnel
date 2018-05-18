@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the StatusViewController class, which controls a view used to start and stop a VPN connection, and display the status of the VPN connection.
+    该文件包含StatusViewController类，该类控制用于启动和停止VPN连接的视图，并显示VPN连接的状态。
 */
 
 import UIKit

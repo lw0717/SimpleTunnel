@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the AddEditConfiguration class, which is responsible for controlling a view used to create or edit a VPN configuration.
+    该文件包含AddEditConfiguration类，它负责控制用于创建或编辑VPN配置的视图。
 */
 
 import UIKit

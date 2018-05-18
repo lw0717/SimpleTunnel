@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the ControlExtension class. The ControlExtension class is a sub-class of NEFilterControlProvider, and is responsible for downloading content filter rules from a web service.
+    该文件包含ControlExtension类。 ControlExtension类是NEFilterControlProvider的一个子类，负责从Web服务下载内容过滤规则。
 */
 
 import NetworkExtension

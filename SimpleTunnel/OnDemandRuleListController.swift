@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the OnDemandRuleListController class, which is responsible for controlling a list of Connect On Demand rules.
+    该文件包含OnDemandRuleListController类，该类负责控制Connect On Demand规则列表。
 */
 
 import UIKit

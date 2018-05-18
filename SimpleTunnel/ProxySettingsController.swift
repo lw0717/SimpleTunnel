@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the ProxySettingsController class, which controls a view used to edit proxy settings.
+    该文件包含ProxySettingsController类，该类控制用于编辑代理设置的视图。
 */
 
 import UIKit

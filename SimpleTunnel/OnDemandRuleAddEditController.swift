@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the OnDemandRuleAddEditController class, which controls a view that is used to create or edit a Connect On Demand rule.
+    该文件包含OnDemandRuleAddEditController类，该类控制用于创建或编辑Connect On On Demand规则的视图。
 */
 
 import UIKit

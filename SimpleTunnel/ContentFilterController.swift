@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the ContentFilterController class, which controls a view used to start and stop a content filter, and display current filtering rules.
+    该文件包含ContentFilterController类，该类控制用于启动和停止内容过滤器的视图，并显示当前的过滤规则。
 */
 
 import UIKit
@@ -47,7 +48,7 @@ class ContentFilterController: UITableViewController {
 				newConfiguration.organization = "Acme Inc."
 				newConfiguration.filterBrowsers = true
 				newConfiguration.filterSockets = true
-				newConfiguration.serverAddress = self.rulesServerCell.textField.text ?? "my.great.filter.server"
+				newConfiguration.serverAddress = "my.great.filter.server"//self.rulesServerCell.textField.text ?? "my.great.filter.server"
 				NEFilterManager.shared().providerConfiguration = newConfiguration
 			}
 			NEFilterManager.shared().isEnabled = self.statusCell.isOn

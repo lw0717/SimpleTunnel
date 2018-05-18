@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the ListViewController class, which is responsible for controlling a list items.
+    该文件包含ListViewController类，它负责控制列表项目。
 */
 
 import UIKit

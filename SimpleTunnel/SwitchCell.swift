@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the SwitchCell class, which is a UITableViewCell sub-class for a cell that contains a UISwitch.
+    该文件包含SwitchCell类，它是包含UISwitch的单元的UITableViewCell子类。
 */
 
 import UIKit

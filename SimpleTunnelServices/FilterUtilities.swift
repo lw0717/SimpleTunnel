@@ -4,12 +4,14 @@
 	
 	Abstract:
 	This file contains the FilterUtilities class. FilterUtilities objects contain functions and data that is used by both the SimpleTunnel UI and the SimpleTunnel content filter providers.
+    该文件包含FilterUtilities类。 FilterUtilities对象包含SimpleTunnel UI和SimpleTunnel内容过滤器提供程序都使用的函数和数据。
 */
 
 import Foundation
 import NetworkExtension
 
 /// Content Filter actions.
+/// 内容过滤器操作
 public enum FilterRuleAction : Int, CustomStringConvertible {
 	case block = 1
 	case allow = 2
@@ -37,6 +39,7 @@ public enum FilterRuleAction : Int, CustomStringConvertible {
 }
 
 /// A class containing utility properties and functions for Content Filtering.
+/// 包含用于内容过滤的实用程序属性和功能的类。
 open class FilterUtilities {
 
 	// MARK: Properties
@@ -47,6 +50,7 @@ open class FilterUtilities {
 	// MARK: Initializers
 
 	/// Get rule parameters for a flow from the SimpleTunnel user defaults.
+    /// 从SimpleTunnel用户默认值获取流的规则参数。
 	open class func getRule(_ flow: NEFilterFlow) -> (FilterRuleAction, String, [String: AnyObject]) {
 		let hostname = FilterUtilities.getFlowHostname(flow)
 
@@ -65,6 +69,7 @@ open class FilterUtilities {
 	}
 
 	/// Get the hostname from a browser flow.
+    /// 从浏览器流中获取主机名。
 	open class func getFlowHostname(_ flow: NEFilterFlow) -> String {
 		guard let browserFlow : NEFilterBrowserFlow = flow as? NEFilterBrowserFlow,
 			let url = browserFlow.url,
@@ -75,6 +80,7 @@ open class FilterUtilities {
 	}
 
 	/// Download a fresh set of rules from the rules server.
+    /// 从规则服务器下载一组新的规则。
 	open class func fetchRulesFromServer(_ serverAddress: String?) {
 		simpleTunnelLog("fetch rules called")
 

@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the StringListController class, which controls a list of strings.
+    该文件包含控制字符串列表的StringListController类。
 */
 
 import UIKit

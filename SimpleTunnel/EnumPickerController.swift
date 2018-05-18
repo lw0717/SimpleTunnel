@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the EnumPickerController class, which is used to control a view containing a UIPickerView.
+    该文件包含EnumPickerController类，该类用于控制包含UIPickerView的视图。
 */
 
 import UIKit

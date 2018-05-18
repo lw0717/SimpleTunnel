@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the ProxyServerAddEditController class, which controls a view used to create or edit a proxy server configuration.
+    该文件包含ProxyServerAddEditController类，该类控制用于创建或编辑代理服务器配置的视图。
 */
 
 import UIKit

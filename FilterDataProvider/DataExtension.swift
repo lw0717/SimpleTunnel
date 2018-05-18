@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file contains the DataExtension class. The DataExtension class is a sub-class of NEFilterDataProvider, and implements a network content filter.
+    该文件包含DataExtension类。 DataExtension类是NEFilterDataProvider的子类，并实现了网络内容过滤器。
 */
 
 import NetworkExtension
@@ -30,7 +31,7 @@ class DataExtension: NEFilterDataProvider {
 		var result = NEFilterNewFlowVerdict.allow()
 
 		simpleTunnelLog("handleNewFlow called for flow: \(flow)")
-
+        
 		// Look for a matching rule in the current set of rules.
 		let (ruleType, hostname, hostNameRule) = FilterUtilities.getRule(flow)
 
