@@ -4,35 +4,43 @@
 	
 	Abstract:
 	This file contains the ServerTunnel class. The ServerTunnel class implements the server side of the SimpleTunnel tunneling protocol.
+    该文件包含ServerTunnel类。 ServerTunnel类实现SimpleTunnel隧道协议的服务器端。
 */
 
 import Foundation
 import SystemConfiguration
 
 /// The server-side implementation of the SimpleTunnel protocol.
+/// SimpleTunnel协议的服务器端实现。
 class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 
-	// MARK: Properties
+	// MARK: - Properties
 
 	/// The stream used to read data from the tunnel TCP connection.
+    /// 用于从隧道TCP连接读取数据的流。
     var readStream: InputStream?
 
 	/// The stream used to write data to the tunnel TCP connection.
+    /// 用于将数据写入隧道TCP连接的流。
     var writeStream: OutputStream?
 
 	/// A buffer where the data for the current packet is accumulated.
+    /// 当前数据包数据所在的缓冲区。
 	let packetBuffer = NSMutableData()
 
 	/// The number of bytes remaining to be read for the current packet.
+    /// 当前数据包剩余要读取的字节数。
 	var packetBytesRemaining = 0
 
 	/// The server configuration parameters.
+    /// 服务器配置参数。
 	static var configuration = ServerConfiguration()
 
 	/// The delegate for the network service published by the server.
+    /// 由服务器发布的网络服务的委托。
 	static var serviceDelegate = ServerDelegate()
 
-	// MARK: Initializers
+	// MARK: - Initializers
 
 	init(newReadStream: InputStream, newWriteStream: OutputStream) {
 		super.init()
@@ -47,9 +55,10 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 		writeStream = newWriteStream
 	}
 
-	// MARK: Class Methods
+	// MARK: - Class Methods
 
 	/// Start the network service.
+    /// 启动网络服务。
 	class func startListeningOnPort(port: Int32) -> NetService {
 		let service = NetService(domain:Tunnel.serviceDomain, type:Tunnel.serviceType, name: "", port: port)
 
@@ -63,13 +72,15 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 	}
 
 	/// Load the configuration from disk.
+    /// 从磁盘加载配置。
 	class func initializeWithConfigurationFile(path: String) -> Bool {
 		return ServerTunnel.configuration.loadFromFileAtPath(path: path)
 	}
 
-	// MARK: Interface
+	// MARK: - Interface
 
 	/// Handle a bytes available event on the read stream.
+    /// 处理读取流中的字节可用事件。
 	func handleBytesAvailable() -> Bool {
 
 		guard let stream = readStream else { return false }
@@ -81,10 +92,12 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 
 			if packetBytesRemaining == 0 {
 				// Currently reading the total length of the packet.
+                // 当前正在读取数据包的总长度。
 				toRead = MemoryLayout<UInt32>.size - packetBuffer.length
 			}
 			else {
 				// Currently reading the packet payload.
+                // 当前正在读取数据包有效载荷
 				toRead = packetBytesRemaining > readBuffer.count ? readBuffer.count : packetBytesRemaining
 			}
 
@@ -98,6 +111,7 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 
 			if packetBytesRemaining == 0 {
 				// Reading the total length, see if the 4 length bytes have been received.
+                // 读取总长度，看看是否收到了4个长度字节。
 				if packetBuffer.length == MemoryLayout<UInt32>.size {
 					var totalLength: UInt32 = 0
 					packetBuffer.getBytes(&totalLength, length: MemoryLayout.size(ofValue: totalLength))
@@ -105,15 +119,18 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 					guard totalLength <= UInt32(Tunnel.maximumMessageSize) else { return false }
 
 					// Compute the length of the payload.
+                    // 计算有效载荷的长度。
 					packetBytesRemaining = Int(totalLength) - MemoryLayout.size(ofValue: totalLength)
 					packetBuffer.length = 0
 				}
 			}
 			else {
 				// Read a portion of the payload.
+                // 读取有效负载的一部分。
 				packetBytesRemaining -= bytesRead
 				if packetBytesRemaining == 0 {
 					// The entire packet has been received, process it.
+                    // 整个数据包已收到，处理它。
 					if !handlePacket(packetBuffer as Data) {
 						return false
 					}
@@ -126,6 +143,7 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 	}
 
 	/// Send an "Open Result" message to the client.
+    /// 发送一个“Open Result”消息给客户端。
 	func sendOpenResultForConnection(connectionIdentifier: Int, resultCode: TunnelConnectionOpenResult) {
 		let properties = createMessagePropertiesForConnection(connectionIdentifier, commandType: .openResult, extraProperties:[
 				TunnelMessageKey.ResultCode.rawValue: resultCode.rawValue as AnyObject
@@ -137,6 +155,7 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 	}
 
 	/// Handle a "Connection Open" message received from the client.
+    /// 处理从客户端收到的“Connection Open”消息。
 	func handleConnectionOpen(properties: [String: AnyObject]) {
 		guard let connectionIdentifier = properties[TunnelMessageKey.Identifier.rawValue] as? Int,
 			let tunnelLayerNumber = properties[TunnelMessageKey.TunnelType.rawValue] as? Int,
@@ -175,9 +194,10 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 		}
 	}
 
-	// MARK: NSStreamDelegate
+	// MARK: - NSStreamDelegate
 
 	/// Handle a stream event.
+    /// 处理一个流事件。
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
 		switch aStream {
 
@@ -185,6 +205,7 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 				switch eventCode {
 					case [.hasSpaceAvailable]:
 						// Send any buffered data.
+                        //发送任何缓冲数据。
 						if !savedData.isEmpty {
 							guard savedData.writeToStream(writeStream!) else {
 								closeTunnel()
@@ -234,9 +255,10 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 
     }
 
-	// MARK: Tunnel
+	// MARK: - Tunnel
 
 	/// Close the tunnel.
+    /// 关闭隧道。
     override func closeTunnel() {
 
         if let stream = readStream {
@@ -272,6 +294,7 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
     }
 
 	/// Handle a message received from the client.
+    /// 处理从客户端收到的消息。
 	override func handleMessage(_ commandType: TunnelCommand, properties: [String: AnyObject], connection: Connection?) -> Bool {
 		switch commandType {
 			case .open:
@@ -290,50 +313,59 @@ class ServerTunnel: Tunnel, TunnelDelegate, StreamDelegate {
 	}
 
 	/// Write data to the tunnel connection.
+    /// 将数据写入隧道连接。
     override func writeDataToTunnel(_ data: Data, startingAtOffset: Int) -> Int {
 		guard let stream = writeStream else { return -1 }
 		return writeData(data as Data, toStream: stream, startingAtOffset:startingAtOffset)
     }
 
 
-	// MARK: TunnelDelegate
+	// MARK: - TunnelDelegate
 
 	/// Handle the "tunnel open" event.
+    /// 处理“隧道打开”事件。
 	func tunnelDidOpen(_ targetTunnel: Tunnel) {
 	}
 
 	/// Handle the "tunnel closed" event.
+    /// 处理“隧道关闭”事件。
 	func tunnelDidClose(_ targetTunnel: Tunnel) {
 	}
 
 	/// Handle the "tunnel did send configuration" event.
+    /// 处理“隧道发送配置”事件。
 	func tunnelDidSendConfiguration(_ targetTunnel: Tunnel, configuration: [String : AnyObject]) {
 	}
 }
 
 /// An object that servers as the delegate for the network service published by the server.
+/// 服务器作为服务器发布的网络服务的委托的对象。
 class ServerDelegate : NSObject, NetServiceDelegate {
 
-	// MARK: NSNetServiceDelegate
+	// MARK: - NSNetServiceDelegate
 
 	/// Handle the "failed to publish" event.
+    /// 处理“发布失败”事件。
 	func netService(_ sender: NetService, didNotPublish errorDict: [String : NSNumber]) {
 		simpleTunnelLog("Failed to publish network service")
 		exit(1)
 	}
 
 	/// Handle the "published" event.
+    /// 处理“发布”事件。
 	func netServiceDidPublish(_ sender: NetService) {
 		simpleTunnelLog("Network service published successfully")
 	}
 
 	/// Handle the "new connection" event.
+    /// 处理“新连接”事件。
 	func netService(_ sender: NetService, didAcceptConnectionWith inputStream: InputStream, outputStream: OutputStream) {
 		simpleTunnelLog("Accepted a new connection")
 		_ = ServerTunnel(newReadStream: inputStream, newWriteStream: outputStream)
 	}
 
 	/// Handle the "stopped" event.
+    /// 处理“停止”事件。
 	func netServiceDidStop(_ sender: NetService) {
 		simpleTunnelLog("Network service stopped")
 		exit(0)

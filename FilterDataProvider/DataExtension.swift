@@ -26,8 +26,19 @@ class DataExtension: NEFilterDataProvider {
 
 	// MARK: NEFilterDataProvider
 
+    override func startFilter(completionHandler: @escaping (Error?) -> Void) {
+        // Add code to initialize the filter.
+        completionHandler(nil)
+    }
+
+    override func stopFilter(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
+        // Add code to clean up filter resources.
+        completionHandler()
+    }
+
 	/// Handle a new flow of data.
 	override func handleNewFlow(_ flow: NEFilterFlow) -> NEFilterNewFlowVerdict {
+        return NEFilterNewFlowVerdict.drop()
 		var result = NEFilterNewFlowVerdict.allow()
 
 		simpleTunnelLog("handleNewFlow called for flow: \(flow)")
@@ -78,6 +89,7 @@ class DataExtension: NEFilterDataProvider {
 
 	/// Filter an inbound chunk of data.
 	override func handleInboundData(from flow: NEFilterFlow, readBytesStartOffset offset: Int, readBytes: Data) -> NEFilterDataVerdict {
+        return NEFilterDataVerdict.drop()
 		var result = NEFilterDataVerdict.allow()
 		simpleTunnelLog("handleInboundDataFromFlow called for flow \(flow)")
 
@@ -139,6 +151,7 @@ class DataExtension: NEFilterDataProvider {
 
 	/// Handle the event where all of the inbound data for a flow has been filtered.
 	override func handleInboundDataComplete(for flow: NEFilterFlow) -> NEFilterDataVerdict {
+        return NEFilterDataVerdict.drop()
 		var result = NEFilterDataVerdict.allow()
 		simpleTunnelLog("handleInboundDataCompleteForFlow called for \(flow)")
 
@@ -186,6 +199,7 @@ class DataExtension: NEFilterDataProvider {
 
 	/// Filter an outbound chunk of data.
 	override func handleOutboundData(from flow: NEFilterFlow, readBytesStartOffset offset: Int, readBytes: Data) -> NEFilterDataVerdict {
+        return NEFilterDataVerdict.drop()
 		var result = NEFilterDataVerdict.allow()
 		simpleTunnelLog("handleOutboundDataFromFlow called for \(flow)")
 
@@ -247,6 +261,7 @@ class DataExtension: NEFilterDataProvider {
 
 	/// Handle the event where all of the outbound data for a flow has been filtered.
 	override func handleOutboundDataComplete(for flow: NEFilterFlow) -> NEFilterDataVerdict {
+        return NEFilterDataVerdict.drop()
 		var result = NEFilterDataVerdict.allow()
 		simpleTunnelLog("handleOutboundDataCompleteForFlow called for \(flow)")
 

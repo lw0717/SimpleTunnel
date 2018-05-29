@@ -4,6 +4,7 @@
 	
 	Abstract:
 	This file is the main header file for the SimpleTunnelServices module.
+    该文件是SimpleTunnelServices模块的主要头文件。
 */
 
 @import Foundation;

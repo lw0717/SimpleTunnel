@@ -4,28 +4,34 @@
 	
 	Abstract:
 	This file contains the AddressPool class. The AddressPool class is used to manage a pool of IP addresses.
+    该文件包含AddressPool类。 AddressPool类用于管理IP地址池。
 */
 
 import Foundation
 
 /// An object that contains a pool of IP addresses to assign to tunnel clients.
+/// 包含要分配给隧道客户端的IP地址池的对象。
 class AddressPool {
 
-	// MARK: Properties
+	// MARK: - Properties
 
 	/// The start address of the pool.
+    /// 池的起始地址。
 	let baseAddress: SocketAddress
 
 	/// The number of addresses in the pool.
+    /// 池中的地址数量。
 	var size: UInt64 = 0
 
 	/// A list of flags indicating which addresses in the pool are currently allocated to clients.
+    /// 指示池中哪些地址当前分配给客户端的标志列表。
 	var inUseMask: [Bool]
 
 	/// A dispatch queue for serializing access to the pool.
+    /// 用于序列化对池的访问的分派队列。
 	let queue: DispatchQueue
 
-	// MARK: Initializers
+	// MARK: - Initializers
 	
 	init(startAddress: String, endAddress: String) {
 		baseAddress = SocketAddress()
@@ -36,6 +42,7 @@ class AddressPool {
 		let end = SocketAddress()
 
 		// Verify that the address pool is specified correctly.
+        // 验证地址池是否正确指定。
 
 		guard start.setFromString(startAddress) &&
 			end.setFromString(endAddress) &&
@@ -63,6 +70,7 @@ class AddressPool {
 	}
 
 	/// Allocate an address from the pool.
+    /// 分配池中的地址。
 	func allocateAddress() -> String? {
 		var result: String?
 
@@ -85,6 +93,7 @@ class AddressPool {
 	}
 
 	/// Deallocate an address in the pool.
+    /// 取消分配池中的地址。
 	func deallocateAddress(addrString: String) {
 		queue.sync() {
 			let address = SocketAddress()

@@ -42,12 +42,13 @@ public enum FilterRuleAction : Int, CustomStringConvertible {
 /// 包含用于内容过滤的实用程序属性和功能的类。
 open class FilterUtilities {
 
-	// MARK: Properties
+	// MARK: - Properties
 
 	/// A reference to the SimpleTunnel user defaults.
+    /// 对SimpleTunnel用户默认值的引用。
 	open static let defaults = UserDefaults(suiteName: "group.com.example.apple-samplecode.SimpleTunnel")
 
-	// MARK: Initializers
+	// MARK: - Initializers
 
 	/// Get rule parameters for a flow from the SimpleTunnel user defaults.
     /// 从SimpleTunnel用户默认值获取流的规则参数。
